@@ -12,6 +12,8 @@ public class Enemy : MonoBehaviour
     internal Renderer m_renderer;
     internal bool m_isActiv = false;
 
+    public Transform m_explosionFX;
+
     void Start()
     {
         m_renderer = this.GetComponent<Renderer>();
@@ -45,7 +47,10 @@ public class Enemy : MonoBehaviour
             {
                 m_life -= rocket.m_power;
                 if (m_life <= 0)
+                {
+                    Instantiate(m_explosionFX, this.transform.position, Quaternion.identity);
                     Destroy(this.gameObject);
+                }
             }
         }
         else if (other.tag == "Player")

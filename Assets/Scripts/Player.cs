@@ -9,12 +9,17 @@ public class Player : MonoBehaviour
 
     Transform m_transform;
 
+    public AudioClip m_shootClip;
+    protected AudioSource m_audio;
+    public Transform m_explosionFX;
+
     public Transform m_rocket;
     float m_rocketTimer = 0;
 
     void Start()
     {
         m_transform = this.transform;
+        m_audio = this.GetComponent<AudioSource>();
     }
 
     void Update()
@@ -39,7 +44,11 @@ public class Player : MonoBehaviour
         {
             m_rocketTimer = 0.1f;
             if (Input.GetKey(KeyCode.Space) || Input.GetMouseButton(0))
+            {
                 Instantiate(m_rocket, m_transform.position, m_transform.rotation);
+                m_audio.PlayOneShot(m_shootClip);
+            }
+
         }
 
     }
@@ -50,7 +59,11 @@ public class Player : MonoBehaviour
         {
             m_life -= 1;
             if (m_life <= 0)
+            {
+                Instantiate(m_explosionFX, m_transform.position, Quaternion.identity);
                 Destroy(this.gameObject);
+            }
+
         }
     }
 }
