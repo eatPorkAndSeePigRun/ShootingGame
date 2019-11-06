@@ -19,4 +19,11 @@ public class Rocket : MonoBehaviour
         if (this.enabled)
             Destroy(this.gameObject);
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag != "Enemy")
+            return;
+        Destroy(this.gameObject);
+    }
 }

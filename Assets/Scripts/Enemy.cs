@@ -6,18 +6,52 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public float m_speed = 1;
-    public int m_life = 10;
+    public float m_life = 10;
     protected float m_rotSpeed = 30;
+
+    internal Renderer m_renderer;
+    internal bool m_isActiv = false;
+
+    void Start()
+    {
+        m_renderer = this.GetComponent<Renderer>();
+    }
 
 
     void Update()
     {
         UpdateMove();
+        if (m_isActiv && !this.m_renderer.isVisible)
+            Destroy(this.gameObject);
     }
 
     protected virtual void UpdateMove()
     {
         float rx = Mathf.Sin(Time.time) * Time.deltaTime;
         transform.Translate(new Vector3(rx, 0, -m_speed * Time.deltaTime));
+    }
+
+    private void OnBecameVisible()
+    {
+        m_isActiv = true;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "PlayerRocket")
+        {
+            Rocket rocket = other.GetComponent<Rocket>();
+            if (rocket != null)
+            {
+                m_life -= rocket.m_power;
+                if (m_life <= 0)
+                    Destroy(this.gameObject);
+            }
+        }
+        else if (other.tag == "Player")
+        {
+            m_life = 0;
+            Destroy(this.gameObject);
+        }
     }
 }

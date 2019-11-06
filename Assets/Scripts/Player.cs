@@ -5,6 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public float m_speed = 1;
+    public float m_life = 3;
 
     Transform m_transform;
 
@@ -41,5 +42,15 @@ public class Player : MonoBehaviour
                 Instantiate(m_rocket, m_transform.position, m_transform.rotation);
         }
 
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag != "PlayerRocket")
+        {
+            m_life -= 1;
+            if (m_life <= 0)
+                Destroy(this.gameObject);
+        }
     }
 }
