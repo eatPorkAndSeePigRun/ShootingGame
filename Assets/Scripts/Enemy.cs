@@ -8,6 +8,7 @@ public class Enemy : MonoBehaviour
     public float m_speed = 1;
     public float m_life = 10;
     protected float m_rotSpeed = 30;
+    public int m_point = 10;
 
     internal Renderer m_renderer;
     internal bool m_isActiv = false;
@@ -48,6 +49,7 @@ public class Enemy : MonoBehaviour
                 m_life -= rocket.m_power;
                 if (m_life <= 0)
                 {
+                    GameManager.Instance.AddScore(m_point);
                     Instantiate(m_explosionFX, this.transform.position, Quaternion.identity);
                     Destroy(this.gameObject);
                 }

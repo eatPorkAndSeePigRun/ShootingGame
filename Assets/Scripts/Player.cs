@@ -58,6 +58,7 @@ public class Player : MonoBehaviour
         if (other.tag != "PlayerRocket")
         {
             m_life -= 1;
+            GameManager.Instance.ChangeLife((int)m_life);
             if (m_life <= 0)
             {
                 Instantiate(m_explosionFX, m_transform.position, Quaternion.identity);
